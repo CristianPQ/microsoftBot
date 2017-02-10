@@ -10,10 +10,10 @@ var yandexSupported = "tr.json/getLangs";
 var yandexKey = "trnsl.1.1.20170208T163336Z.17ad37a93f70dd69.11ba34fd99ac6320ae57776daf0c68f958b63f97";
 
 //=========================================================
-// Aux function
+// Tokens
 //=========================================================
 
-
+var finishConversationToken = "/finish";
 
 //=========================================================
 // Bot Setup
@@ -39,8 +39,10 @@ server.post('/api/messages', connector.listen());
 
 bot.dialog('/', [
 	function(session, args, next) {
+		console.log("----------args-----------");
+		console.log(args);
 		if(!session.privateConversationData.firstTime) {
-			session.send("Welcome to botTranslator!")
+			session.send("Welcome to botTranslator!");
 			session.privateConversationData.firstTime = true;
 		}
 		if (!session.userData.langs) {
@@ -55,8 +57,9 @@ bot.dialog('/', [
 		//TODO: Comprobar si la API acepta nuevos idiomas y en caso afirmativo informar al usuario
 	},
 	function(session, next) {
-		session.beginDialog("/translate");
 
+		session.beginDialog("/translate");
+		
 	}
 	]);
 
@@ -73,8 +76,8 @@ bot.dialog('/supported',
 			}
 
 			session.beginDialog("/language");
+			session.endDialog()
 		});
-		session.endDialog()
 	});
 
 bot.dialog('/language', [
@@ -89,7 +92,6 @@ bot.dialog('/language', [
 		var validLangs = [];
 		for (var i = 0; i < session.userData.dirs.length; i++) {
 			var elem = session.userData.dirs[i].split("-");
-			console.log(elem);
 			if (elem[elem.length-1] == session.privateConversationData.language) {
 				validLangs.push(elem[0]);
 			}
@@ -106,6 +108,7 @@ bot.dialog('/language', [
 		} else{
 			session.send("You can translate from: " + validLanguages);
 		}
+		session.send("To end the conversation type \"" + finishConversationToken+ "\"");
 		session.endDialog();
 	}
 ]);
@@ -116,10 +119,13 @@ bot.dialog('/translate', [
 			session.userData.langs[session.privateConversationData.language]);
 	},
 	function(session, results) {
-
+		if (results.response == finishConversationToken) {
+			session.endConversation("See you soon!");
+		}
 		request.post({url:yandexURI+yandexTranslate, form:{key:yandexKey, text: results.response,
 			lang: session.privateConversationData.language, format: "plain", options: "1"}}, function(err, resp, body){
-			console.log(JSON.parse(body));
+	
+
 			session.send(results.response + " -- in %s is translated to %s as -- " + JSON.parse(body).text,
 				session.userData.langs[JSON.parse(body).detected.lang], 
 				session.userData.langs[session.privateConversationData.language]);

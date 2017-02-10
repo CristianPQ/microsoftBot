@@ -13,9 +13,9 @@ Notas:
 - Para poder probarlo se recomienda elegir English (17) o Spanish(19) con tal de entender la traducción.
 - En ningún momento hace falta que indiques el idioma de origen ya que se detectará automaticamente.
 
-Extensiones:
+Extensiones/cambios:
 - Control de errores por parte del BOT
 - Control de respuestas (erroes) de la API
 - Mejora del flujo de la conversación entre el bot y el usuario
 - Comprobación de si se ha extendido la lista de idiomas soportados por la API
-
+- Entender texto para idioma en vez de elegir de lista
