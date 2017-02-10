@@ -1,0 +1,23 @@
+{
+  "name": "microsoftbot",
+  "version": "1.0.0",
+  "description": "Demo bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristianPQ/microsoftBot.git"
+  },
+  "author": "Cristian Miguel Pinto Quinto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CristianPQ/microsoftBot/issues"
+  },
+  "homepage": "https://github.com/CristianPQ/microsoftBot#readme",
+  "dependencies": {
+    "botbuilder": "^3.6.0",
+    "restify": "^4.3.0"
+  }
+}
